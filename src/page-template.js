@@ -2,7 +2,7 @@
 
 
 // create engineer cards
-const generateEngineer = engineersArr => {
+const generateEngineer = engineer => {
     return `
         <section class="card" id="team-member">
             <div class="flex-row justify-space-between">
@@ -25,7 +25,7 @@ const generateEngineer = engineersArr => {
 };
 
 // create intern cards
-const generateIntern = internsArr => {
+const generateIntern = intern => {
     return `
         <section class="card" id="team-member">
             <div class="flex-row justify-space-between">
@@ -48,8 +48,8 @@ const generateIntern = internsArr => {
 };
 
 // export function to generate entire page 
-module.exports = templateData => {
-    const { engineers, interns, ...manager} = templateData;
+module.exports = templateHtml => {
+    const { engineers, interns, ...manager} = templateHtml;
     return `
     <!DOCTYPE html>
     <html lang="en">

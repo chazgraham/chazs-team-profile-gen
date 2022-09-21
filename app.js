@@ -1,8 +1,12 @@
+const Manager = require('./lib/Manager');
+const Intern = require('./lib/Intern');
+const Engineer = require('./lib/Engineer');
 const { writeFile, copyFile } = require('./utils/generateWebPage.js');
 const inquirer = require('inquirer');
 const generateWebPage = require('./src/page-template.js');
+const teamMember = [];
 
-const teamQuestions = () => {
+const managerQuestions = () => {
     return inquirer.prompt([
         {
             type: 'input',
@@ -56,34 +60,41 @@ const teamQuestions = () => {
                 }
             } 
         },
+    ])
+    .then(answers => {
+        const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber);
+        teamMember.push(manager);
+        promptBuildTeam()
+    })
+};
+
+const promptBuildTeam = () => {
+    return inquirer.prompt([
         {
             type: 'list',
-            name: 'teamMember',
+            name: 'newTeamMember',
             message: 'Do you have anymore team members?',
             choices: ['Engineer', 'Intern', 'None']
         }
     ])
-    .then(teamQuestions => {
-        if (teamQuestions.teamMember === 'Engineer') {
-            return promptEngineer(); 
-        } else if (teamQuestions.teamMember === 'Intern') {
-            return promptIntern();
+    .then(memberChoice => {
+        if(memberChoice.newTeamMember === 'Engineer') {
+            promptEngineer();
+        } else if(memberChoice.newTeamMember === 'Intern') {
+            promptIntern();
         } else {
             return;
         }
     })
 }
 
-const promptEngineer = teamData => {
+const promptEngineer = () => {
     console.log(`
     =================
     Add a New engineer
     =================
     `);
 
-    if (!teamData.engineers) {
-        teamData.engineers = [];
-    }
     return inquirer.prompt([
         {
             type: 'input',
@@ -136,36 +147,22 @@ const promptEngineer = teamData => {
                 return false;
               }
             } 
-        },
-        {
-            type: 'list',
-            name: 'teamMember',
-            message: 'Do you have anymore team members?',
-            choices: ['Engineer', 'Intern', 'None']
         }
     ])
-    .then(engineerData => {
-        teamData.engineers.push(engineerData)
-        if (engineerData.teamMember === 'Engineer') {
-            return promptEngineer(teamData); 
-        } else if (engineerData.teamMember === 'Intern') {
-            return promptIntern();
-        } else {
-            return teamData;
-        }
+    .then(answers => {
+        const engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub);
+        teamMember.push(engineer);
+        promptBuildTeam()
     })
 }
 
-const promptIntern = teamData => {
+const promptIntern = () => {
     console.log(`
     =================
     Add a New intern
     =================
     `);
 
-    if (!teamData.interns) {
-        teamData.interns = [];
-    }
     return inquirer.prompt([
         {
             type: 'input',
@@ -218,41 +215,14 @@ const promptIntern = teamData => {
                     return false;
                 }
             } 
-        },
-        {
-            type: 'list',
-            name: 'teamMember',
-            message: 'Do you have anymore team members?',
-            choices: ['Engineer', 'Intern', 'None']  
         }
     ])
-    .then(internData => {
-        teamData.interns.push(internData)
-        if (internData.teamMember === 'Engineer') {
-            return promptEngineer(); 
-        } else if (internData.teamMember === 'Intern') {
-            return promptIntern(teamData);
-        } else {
-            return teamData;
-        }
+    .then(answers => {
+        const intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool);
+        teamMember.push(intern);
+        promptBuildTeam()
     })
 }
 
-teamQuestions()
-    .then(teamData => {
-        return generateWebPage(teamData);
-    })
-    .then(pageHTML => {
-        return writeFile(pageHTML);
-    })
-    .then(writeFileResponse => {
-        console.log(writeFileResponse);
-        return copyFile();
-      })
-      .then(copyFileResponse => {
-        console.log(copyFileResponse);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    
+//TODO: make a proper function that calls generateWebPage and Page-template
+managerQuestions()
