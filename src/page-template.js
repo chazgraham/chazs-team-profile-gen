@@ -48,7 +48,6 @@ const generateIntern = internsArr => {
 };
 
 // export function to generate entire page 
-
 module.exports = templateData => {
     const { engineers, interns, ...manager} = templateData;
     return `

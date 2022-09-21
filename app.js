@@ -1,5 +1,4 @@
 const { writeFile, copyFile } = require('./utils/generateWebPage.js');
-const fs = require('fs');
 const inquirer = require('inquirer');
 const generateWebPage = require('./src/page-template.js');
 
@@ -66,19 +65,25 @@ const teamQuestions = () => {
     ])
     .then(teamQuestions => {
         if (teamQuestions.teamMember === 'Engineer') {
-            return engineerQuestions(); 
+            return promptEngineer(); 
         } else if (teamQuestions.teamMember === 'Intern') {
-            return internQuestions();
+            return promptIntern();
         } else {
             return;
         }
     })
 }
 
-const engineerQuestions = teamData => {
-   // if (!teamData.engineers) {
-     //   teamData.engineers = [];
-    //  }
+const promptEngineer = teamData => {
+    console.log(`
+    =================
+    Add a New engineer
+    =================
+    `);
+
+    if (!teamData.engineers) {
+        teamData.engineers = [];
+    }
     return inquirer.prompt([
         {
             type: 'input',
@@ -139,22 +144,28 @@ const engineerQuestions = teamData => {
             choices: ['Engineer', 'Intern', 'None']
         }
     ])
-    .then(teamQuestions => {
-        //teamData.engineers.push(teamData)
-        if (teamQuestions.teamMember === 'Engineer') {
-            return engineerQuestions(); 
-        } else if (teamQuestions.teamMember === 'Intern') {
-            return internQuestions();
+    .then(engineerData => {
+        teamData.engineers.push(engineerData)
+        if (engineerData.teamMember === 'Engineer') {
+            return promptEngineer(teamData); 
+        } else if (engineerData.teamMember === 'Intern') {
+            return promptIntern();
         } else {
             return teamData;
         }
     })
 }
 
-const internQuestions = teamData => {
-   // if (!teamData.interns) {
-       // teamData.interns = [];
-    //  }
+const promptIntern = teamData => {
+    console.log(`
+    =================
+    Add a New intern
+    =================
+    `);
+
+    if (!teamData.interns) {
+        teamData.interns = [];
+    }
     return inquirer.prompt([
         {
             type: 'input',
@@ -215,12 +226,12 @@ const internQuestions = teamData => {
             choices: ['Engineer', 'Intern', 'None']  
         }
     ])
-    .then(teamQuestions => {
-       // teamData.interns.push(teamData)
-        if (teamQuestions.teamMember === 'Engineer') {
-            return engineerQuestions(); 
-        } else if (teamQuestions.teamMember === 'Intern') {
-            return internQuestions();
+    .then(internData => {
+        teamData.interns.push(internData)
+        if (internData.teamMember === 'Engineer') {
+            return promptEngineer(); 
+        } else if (internData.teamMember === 'Intern') {
+            return promptIntern(teamData);
         } else {
             return teamData;
         }
@@ -228,3 +239,20 @@ const internQuestions = teamData => {
 }
 
 teamQuestions()
+    .then(teamData => {
+        return generateWebPage(teamData);
+    })
+    .then(pageHTML => {
+        return writeFile(pageHTML);
+    })
+    .then(writeFileResponse => {
+        console.log(writeFileResponse);
+        return copyFile();
+      })
+      .then(copyFileResponse => {
+        console.log(copyFileResponse);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    
