@@ -1,6 +1,7 @@
+const { writeFile, copyFile } = require('./utils/generateWebPage.js');
 const fs = require('fs');
 const inquirer = require('inquirer');
-const generateWebPage = require('./utils/generateWebPage.js');
+const generateWebPage = require('./src/page-template.js');
 
 const teamQuestions = () => {
     return inquirer.prompt([
@@ -75,9 +76,9 @@ const teamQuestions = () => {
 }
 
 const engineerQuestions = teamData => {
-    if (!teamData.engineers) {
-        teamData.engineers = [];
-      }
+   // if (!teamData.engineers) {
+     //   teamData.engineers = [];
+    //  }
     return inquirer.prompt([
         {
             type: 'input',
@@ -139,7 +140,7 @@ const engineerQuestions = teamData => {
         }
     ])
     .then(teamQuestions => {
-        teamData.engineers.push(teamData)
+        //teamData.engineers.push(teamData)
         if (teamQuestions.teamMember === 'Engineer') {
             return engineerQuestions(); 
         } else if (teamQuestions.teamMember === 'Intern') {
@@ -151,9 +152,9 @@ const engineerQuestions = teamData => {
 }
 
 const internQuestions = teamData => {
-    if (!teamData.interns) {
-        teamData.interns = [];
-      }
+   // if (!teamData.interns) {
+       // teamData.interns = [];
+    //  }
     return inquirer.prompt([
         {
             type: 'input',
@@ -215,7 +216,7 @@ const internQuestions = teamData => {
         }
     ])
     .then(teamQuestions => {
-        teamData.engineers.push(teamData)
+       // teamData.interns.push(teamData)
         if (teamQuestions.teamMember === 'Engineer') {
             return engineerQuestions(); 
         } else if (teamQuestions.teamMember === 'Intern') {
