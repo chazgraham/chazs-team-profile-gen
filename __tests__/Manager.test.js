@@ -12,8 +12,8 @@ test('testing getName method', () => {
     expect(manager.getName()).toBe('chaz');
 });
 
-test('testing getID method', () => {
-    expect(manager.getId()).Tobe('786876');
+test('testing getId method', () => {
+    expect(manager.getId()).toBe('786876');
 });
 
 test('testing getEmail method', () => {
