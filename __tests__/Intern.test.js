@@ -23,3 +23,7 @@ test('testing getEmail mehtod', () => {
 test('testing getSChoolName method', () => {
     expect(intern.getSchoolName()).toBe('utsa')
 })
+
+test('testing getTilte method', () => {
+    expect(intern.getTitle()).toBe('Intern')
+})
