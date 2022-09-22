@@ -8,18 +8,10 @@ test('test the constructor values for the manager object', () => {
     expect(manager.officeNumber).toBe('117')
 });
 
-test('testing getName method', () => {
+test('testing .get methods', () => {
     expect(manager.getName()).toBe('chaz');
-});
-
-test('testing getId method', () => {
     expect(manager.getId()).toBe('786876');
-});
-
-test('testing getEmail method', () => {
     expect(manager.getEmail()).toBe('chaz.chaz@gmail.com');
-});
-
-test('testing getOfficeNumber method', () => {
     expect(manager.getOfficeNumber()).toBe('117');
+    expect(manager.getTitle()).toBe('Manager')
 });

@@ -1,24 +1,35 @@
+
+
 // create manager card
+const generateManager = manager => {
+    return `
+        <section class="card is-responsive">
+            <div class="card-content has-background-link">
+                <h2 class="title has-text-white">${manager.name}</h2>
+                <h3 class="subtitle has-text-white">Manager</h3>
+            </div>
+            <div class="card-content">     
+                <p>ID: ${manager.id}</p>
+                <p>Email: <a href="${manager.email}">${manager.email}</a></p>
+                <p>Office: ${manager.officeNumber}</p>
+            </div>
+        </section>
+    `;
+};
 
 
 // create engineer cards
 const generateEngineer = engineer => {
     return `
-        <section class="card" id="team-member">
-            <div class="flex-row justify-space-between">
-            ${engineersArr
-                .map(({engineerName, engineerId, engineerEmail, engineerGithub}) => {
-                    return`
-                    <div class="col-12 mb-2 bg-dark text-light p-3">
-                        <h2 class="">${engineerName}</h2>
-                        <h3 class="">Engineer</h3>
-                        <p>${engineerId}</p>
-                        <p>${engineerEmail}</p>
-                        <a href="${engineerGithub}" class="btn"><i class="fab fa-github mr-2"></i>View Project on GitHub</a>
-                    </div>
-                `;
-                })
-                .join('')}
+        <section class="card is-responsive">
+            <div class="card-content has-background-link">
+                <h2 class="title has-text-white">${engineer.name}</h2>
+                <h3 class="subtitle has-text-white">Engineer</h3>
+            </div>
+            <div class="card-content">     
+                <p>ID: ${engineer.id}</p>
+                <p>Email: <a href="${engineer.email}">${engineer.email}</a></p>
+                <p>GitHub: <a href="https://github.com/${engineer.github}">${engineer.github}</a></p>
             </div>
         </section>
     `;
@@ -27,29 +38,40 @@ const generateEngineer = engineer => {
 // create intern cards
 const generateIntern = intern => {
     return `
-        <section class="card" id="team-member">
-            <div class="flex-row justify-space-between">
-            ${internsArr
-                .map(({internName, internId, internEmail, internSchool}) => {
-                    return`
-                    <div class="col-12 mb-2 bg-dark text-light p-3">
-                        <h2 class="">${internName}</h2>
-                        <h3 class="">Engineer</h3>
-                        <p>${internId}</p>
-                        <p>${internEmail}</p>
-                        <p>${internSchool}</p>
-                    </div>
-                    `;
-                })
-                .join('')}
+        <section class="card is-responsive">
+            <div class="card-content has-background-link">
+                <h2 class="title has-text-white">${intern.name}</h2>
+                <h3 class="subtitle has-text-white">Intern</h3>
+            </div>
+            <div class="card-content">     
+                <p>ID: ${intern.id}</p>
+                <p>Email: <a href="${intern.email}">${intern.email}</a></p>
+                <p>School: ${intern.school}</p>
             </div>
         </section>
     `;
 };
 
 // export function to generate entire page 
-module.exports = templateHtml => {
-    const { engineers, interns, ...manager} = templateHtml;
+function generateWebPage (teamMembers) {
+    let generatedTeam = teamMembers.map(teamMember => {
+        switch (teamMember.getTitle()) {
+            case "Engineer":
+               return generateEngineer(teamMember);
+                
+            case "Intern":
+               return generateIntern(teamMember);
+                
+            case "Manager":
+               return generateManager(teamMember);
+                
+        
+            default:
+                break;
+        }
+    }) 
+    console.log(generatedTeam);
+    generatedTeam = generatedTeam.join('')
     return `
     <!DOCTYPE html>
     <html lang="en">
@@ -57,37 +79,24 @@ module.exports = templateHtml => {
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Portfolio Demo</title>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
-      <link href="https://fonts.googleapis.com/css?family=Public+Sans:300i,300,500&display=swap" rel="stylesheet">
+      <title>Team Portfolio Generator</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css" />
       <link rel="stylesheet" href="style.css">
     </head>
     
     <body>
-      <header>
-        <div class="container flex-row justify-space-between align-center py-3">
-          <h1 class="page-title text-secondary bg-dark py-2 px-3">My Team</h1>
+    <header>
+        <div>
+            <h1 class="page-title">My Team</h1>
         </div>
-      </header>
-      <main class="container my-5">
-        <section class="card" id="team-member">
-            <div class="flex-row justify-space-between">
-                <div class="col-12 mb-2 bg-dark text-light p-3">
-                    <h2 class="">${manager.managerName}</h2>
-                    <h3 class="">Engineer</h3>
-                    <p>${manager.managerId}</p>
-                    Email: <a href="${manager.managerEmail}">${manager.managerEmail}</a>
-                    <p>${manager.managerOfficeNumber}</p>
-                </div>
-            </div>
-        </section>
-        ${generateEngineer(engineers)}
-        ${generateIntern(interns)}
+    </header>
+      <main>
+        ${generatedTeam}
       </main>
-      <footer class="container text-center py-3">
-        <h3 class="text-dark">&copy; ${new Date().getFullYear()} by ${header.name}</h3>
-      </footer>
+      <footer></footer>
     </body>
     </html>
     `;
-}
+};
+
+module.exports = generateWebPage;

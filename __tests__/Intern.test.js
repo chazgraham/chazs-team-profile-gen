@@ -5,25 +5,13 @@ test('tests to see if pulling constuctor values', () => {
     expect(intern.name).toBe('chaz');
     expect(intern.id).toBe('786876');
     expect(intern.email).toBe('chaz.chaz@gmail.com');
-    expect(intern.schoolName).toBe('utsa');
+    expect(intern.school).toBe('utsa');
 });
 
-test('testing getName method', () => {
+test('testing .get methods', () => {
     expect(intern.getName()).toBe('chaz');
-});
-
-test('testing getId method', () => {
     expect(intern.getId()).toBe('786876');
-});
-
-test('testing getEmail mehtod', () => {
     expect(intern.getEmail()).toBe('chaz.chaz@gmail.com');
+    expect(intern.getSchool()).toBe('utsa');
+    expect(intern.getTitle()).toBe('Intern');
 });
-
-test('testing getSChoolName method', () => {
-    expect(intern.getSchoolName()).toBe('utsa')
-})
-
-test('testing getTilte method', () => {
-    expect(intern.getTitle()).toBe('Intern')
-})

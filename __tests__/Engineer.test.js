@@ -8,22 +8,13 @@ test('testing the pulled constructor values for the engineer objective', () => {
     expect(engineer.github).toBe('chazgraham');
 });
 
-test('testing getName method', () => {
+test('testing .get methods', () => {
     expect(engineer.getName()).toBe('chaz');
-});
-
-test('testing getId method', () => {
     expect(engineer.getId()).toBe('786876');
-});
-
-test('testing getEmail method', () => {
     expect(engineer.getEmail()).toBe('chaz.chaz@gmail.com');
-});
-
-test('testing getGithub method', () => {
     expect(engineer.getGithub()).toBe('chazgraham');
+    expect(engineer.getTitle()).toBe('Engineer');
 });
 
-test('testing getTile method', () => {
-    expect(engineer.getTitle()).toBe('Engineer')
-})
+
+
